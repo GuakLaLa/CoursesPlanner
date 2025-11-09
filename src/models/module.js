@@ -21,6 +21,7 @@ const moduleSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  //reading materials or descriptions
   reading: {
     type: String,
     default: ""

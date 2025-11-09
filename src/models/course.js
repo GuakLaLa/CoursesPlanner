@@ -6,6 +6,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
+  //coures code like CS101
   code: {
     type: String,
     required: true,
@@ -18,7 +19,7 @@ const courseSchema = new mongoose.Schema({
     trim: true
   },
   semester: {
-    type: Number,
+    type: String,//Fall 2024, Spring 2025
     required: true
   },
   instructorId: {
