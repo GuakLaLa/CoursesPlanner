@@ -38,7 +38,11 @@ export const getCourses = async (req, res) => {
 // POST /api/courses
 export const createCourse = async (req, res) => {
   try {
-    const newCourse = new Course(req.body);
+    const { code, title, semester, instructorId } = req.body;
+    if (!code || !title || !instructorId) {
+      return res.status(400).json({ message: "code, title, instructorId are required" });
+    }
+    const newCourse = new Course({ code, title, semester, instructorId });
     await newCourse.save();
     res.status(201).json(newCourse);
   } catch (err) {
