@@ -16,9 +16,9 @@ export const getCourses = async (req, res) => {
 
     //Perform MongoDB query with pagination and sorting
     const courses = await Course.find(query)
-      .skip((page - 1) * size)          //pagination: skip earlier pages
-      .limit(Number(size))              //pagination: limit per page
-      .sort({ [sortBy]: -1 });          //sorting: -1 = descending, 1 = ascending
+      .skip((page - 1) * size)                                //pagination: skip earlier pages
+      .limit(Number(size))                                    //pagination: limit per page
+      .sort({ [sortBy]: order === "asc" ? 1 : -1 });          //sorting: -1 = descending, 1 = ascending
 
     //Send paginated response
     res.json({
@@ -57,5 +57,23 @@ export const updateCourse = async (req, res) => {
     res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+};
+
+// DELETE /api/courses/:id (INSTRUCTOR ONLY)
+export const deleteCourse = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    if (!course) return res.status(404).json({ message: "Course not found" });
+
+    // Delete related modules, assignments, and syllabus versions
+    await Module.deleteMany({ courseId: req.params.id });
+    await Assignment.deleteMany({ courseId: req.params.id });
+    await SyllabusVersion.deleteMany({ courseId: req.params.id });
+
+    await course.deleteOne();
+    res.json({ message: "Course and related data deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

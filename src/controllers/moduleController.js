@@ -43,3 +43,16 @@ export const getModules = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// DELETE /api/courses/:courseId/modules/:moduleId (INSTRUCTOR ONLY)
+export const deleteModule = async (req, res) => {
+  try {
+    const mod = await Module.findOne({ _id: req.params.moduleId, courseId: req.params.courseId });
+    if (!mod) return res.status(404).json({ message: "Module not found" });
+
+    await mod.deleteOne();
+    res.json({ message: "Module deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
