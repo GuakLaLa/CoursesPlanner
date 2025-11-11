@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 
 const moduleSchema = new mongoose.Schema({
-  userId:{
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
@@ -13,14 +8,14 @@ const moduleSchema = new mongoose.Schema({
   },
   week: {
     type: Number,
-    required: true,
-    min: [1, "Week number must be at least 1"]
+    required: true
   },
   topic: {
     type: String,
     required: true,
     trim: true
   },
+  //reading materials or descriptions
   reading: {
     type: String,
     default: ""

@@ -1,10 +1,16 @@
 const SyllabusVersion = require('../models/syllabusVersion');
+const Course = require('../models/course');
 
 //Create new syllabus version
 async function createSyllabusVersion(req, res){
     try{
-        const { id: courseId } = req.params;
+        const { courseId } = req.params;
         const{ notes } = req.body;
+
+        const course = await Course.findById(courseId);
+        if(!course){
+            return res.status(404).send("Coursenot found");
+        }
 
         //Find the latest version
         const latestVersion = await SyllabusVersion.findOne({ courseId }).sort({ version: -1 });
@@ -20,8 +26,11 @@ async function createSyllabusVersion(req, res){
             courseId,
             version: newVersionNumber,
             notes,
-            isCurrent: true
+            isCurrent: true,
+            lockVersion: 0
         });
+
+        await newSyllabusVersion.save();
 
         res.status(201).json(newSyllabusVersion);
 
@@ -34,7 +43,7 @@ async function createSyllabusVersion(req, res){
 //Update syllabus version (optimistic locking)
 async function updateSyllabusVersion(req, res){
     try{
-        const { id: courseId } = req.params;
+        const { courseId } = req.params;
         const { notes, lockVersion } = req.body;
 
         //Find current syllabus version
@@ -54,7 +63,7 @@ async function updateSyllabusVersion(req, res){
         await current.save();
 
         res.status(200).json({message: "Syllabus version updated successfully", syllabusVersion: current});
-        
+
     }catch(error){
         console.log(error);
         res.status(500).send("Server error");
@@ -64,11 +73,11 @@ async function updateSyllabusVersion(req, res){
 //Get current syllabus version
 async function getCurrentSyllabusVersion(req, res){
     try{
-        const { id: courseId } = req.params;
+        const { courseId } = req.params;
 
         const currentVersion = await SyllabusVersion.findOne({ courseId, isCurrent: true });
         if(!currentVersion){
-            return res.status(404).send("No current syllabus version yet");
+            return res.status(404).json({ message:'No current syllabus version yet'});
         }
         res.status(200).json(currentVersion)
 
@@ -81,17 +90,28 @@ async function getCurrentSyllabusVersion(req, res){
 //Get all syllabus versions
 async function getAllSyllabusVersions(req, res){
     try{
-        const { id: courseId } = req.params;
-        const { page = 1, pageSize = 10 } = req.query;
-        const skip = (page - 1) * pageSize;
+        const { courseId } = req.params;
+        let { skip = 0, limit = 10, sort = 'version', order = 'desc' } = req.query;
 
-        const syllabusVersions = await SyllabusVersion.find({ courseId })
-            .sort({ version: -1 })
-            .skip(parseInt(skip))
-            .limit(parseInt(pageSize));
+        skip = parseInt(skip);
+        limit = parseInt(limit);
 
-        res.status(200).json(syllabusVersions);
+        const totalVersions = await SyllabusVersion.countDocuments({ courseId });
+        const versions = await SyllabusVersion.find({ courseId })
+            .skip(skip)
+            .limit(limit)
+            .sort({ [sort]: order === 'asc' ? 1 : -1 });
 
+        res.json({
+            skip,
+            limit,
+            totalVersions,
+            totalPages: Math.ceil(totalVersions / limit),
+            sort,
+            order,
+            data: versions
+        });
+        
     }catch(error){
         console.log(error);
         res.status(500).send("Server error");
