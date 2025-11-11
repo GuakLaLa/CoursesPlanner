@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
-  userId:{
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
+  //coures code like CS101
   code: {
     type: String,
     required: true,
-    unique: true,
-    trim: true
+    unique: true
   },
   title: {
     type: String,
@@ -18,7 +13,7 @@ const courseSchema = new mongoose.Schema({
     trim: true
   },
   semester: {
-    type: Number,
+    type: String,//Fall 2024, Spring 2025
     required: true
   },
   instructorId: {

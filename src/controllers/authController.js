@@ -39,8 +39,7 @@ async function signUpUser(req, res){
         });
         await newUser.save();
 
-        res.redirect('/CoursesPlanner/Login');
-
+        res.status(201).json({message: "User registered successfully", userId: newUser._id});
 
     }catch(error){
         console.log(error);
@@ -55,9 +54,7 @@ async function loginUser(req, res){
             password
         } = req.body;
         //Check if user exists
-        const user = await Users.findOne({
-            email
-        });
+        const user = await Users.findOne({ email});
         if(!user)
             return res.status(400).send("Invalid credentials");
 
@@ -71,6 +68,8 @@ async function loginUser(req, res){
             role: user.role
         }, process.env.JWT_SECRET,
         { expiresIn: '1h'});
+
+        res.cookie('token', token, { httpOnly: true });
 
         res.json({token});
 

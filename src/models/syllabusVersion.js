@@ -1,14 +1,8 @@
 const mongoose = require('mongoose');
 
 const syllabusVersionSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-        required: [true, 'User ID is required'],
-        index: true
-    },
     courseId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Courses',
         required: [true, 'Course ID is required'],
         trim: true,
@@ -17,9 +11,8 @@ const syllabusVersionSchema = new mongoose.Schema({
     version: {
         type: Number,
         required: [true, 'Version is required'],
-        trim: true,
         maxlength: [50, 'Version cannot exceed 50 characters'],
-        default: '1.0'
+        default: '1'
     },
     createdAt: {
         type: Date,
@@ -32,11 +25,15 @@ const syllabusVersionSchema = new mongoose.Schema({
     },
     isCurrent: {
         type: Boolean,
-        default: false
+        default: true
+    },
+    lockVersion: {
+        type: Number,
+        default: 0
     } 
 },  { timestamps: true });
 
 syllabusVersionSchema.index({ courseId: 1, version: -1 },{ unique: true });
 
-const SyllabusSchema = moongoose.model('SyllabusVersion', syllabusVersionSchema);
-module.exports = SyllabusSchema.model;
+const SyllabusSchema = mongoose.model('SyllabusVersion', syllabusVersionSchema);
+module.exports = SyllabusSchema;
