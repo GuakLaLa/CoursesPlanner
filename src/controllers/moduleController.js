@@ -1,7 +1,7 @@
 const Module = require("../models/module");
 
 // POST /api/courses/:id/modules (INSTRUCTOR ONLY)
-export const addModule = async (req, res) => {
+const addModule = async (req, res) => {
   try {
     const { week, topic, reading } = req.body;
     const { courseId } = req.params;
@@ -29,7 +29,7 @@ export const addModule = async (req, res) => {
 
 
 // GET /api/courses/:id/modules (STUDENT + INSTRUCTOR)
-export const getModules = async (req, res) => {
+const getModules = async (req, res) => {
   try {
     const { courseId } = req.params;
     const modules = await Module.find({ courseId })
@@ -43,7 +43,7 @@ export const getModules = async (req, res) => {
 };
 
 // DELETE /api/courses/:courseId/modules/:moduleId (INSTRUCTOR ONLY)
-export const deleteModule = async (req, res) => {
+const deleteModule = async (req, res) => {
   try {
     const { courseId, moduleId } = req.params;
     const mod = await Module.findOne({ _id: moduleId, courseId });
@@ -52,8 +52,10 @@ export const deleteModule = async (req, res) => {
 
     await mod.deleteOne();
     res.json({ message: "Module deleted successfully" });
-    
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
+module.exports = { addModule, getModules, deleteModule };
