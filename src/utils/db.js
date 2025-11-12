@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+//mongodb+srv://zhiweitan:admin@cluster0.a02vh9j.mongodb.net/?appName=Cluster0
+
 export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);

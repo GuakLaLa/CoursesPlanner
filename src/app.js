@@ -1,14 +1,15 @@
+require('dotenv').config({ path: './src/.env' });
+console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const path = require('path');
-
 const cookieParser = require('cookie-parser');
-require('dotenv').config();
 
 //Connect to database
 const mongoose = require('mongoose');
-const uri =""; //MongoDB connection here
+const uri ="mongodb+srv://23005011_db_user:cRvfS4eZYl69A5Mb@coursesplanner.rox5lkk.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(uri)
 .then(()=> {
     console.log("Connected to MongoDB");
@@ -33,10 +34,10 @@ app.use(cookieParser());
 
 //Import Routes
 const authRoute = require('./routes/authRoute');
-const courseRoute = require('./routes/courseRoute');
+const courseRoute = require('./routes/courseRoutes');
 const moduleRoute = require('./routes/moduleRoutes');
-const assignmentRoute = require('./routes/assignmentRoute');
-const syllabusRoute = require('./routes/syllabusRoute');
+const assignmentRoute = require('./routes/assignmentRoutes');
+const syllabusRoute = require('./routes/syllabusRoutes');
 
 //Use Routes
 app.use('/CoursesPlanner/api/auth', authRoute);
@@ -47,5 +48,5 @@ app.use('/CoursesPlanner/api', authMiddleware, syllabusRoute);
 
 //404 handler
 app.use((req, res) => {
-    res.status(404),send("Page not found");
+    res.status(404).send("Page not found");
 });
