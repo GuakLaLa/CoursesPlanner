@@ -25,5 +25,9 @@ const courseSchema = new mongoose.Schema({
   timestamps: true // adds createdAt & updatedAt
 });
 
+<<<<<<< HEAD
 const Course = mongoose.model("Course", courseSchema);
 module.exports = Course;
+=======
+export default mongoose.model("Course", courseSchema);
+>>>>>>> 69aae651ab353530520df0201f4a2ebafd3af539

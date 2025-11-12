@@ -48,5 +48,5 @@ app.use('/CoursesPlanner/api', authMiddleware, syllabusRoute);
 
 //404 handler
 app.use((req, res) => {
-    res.status(404),send("Page not found");
+    res.status(404).send("Page not found");
 });
