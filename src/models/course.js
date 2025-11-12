@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
   //coures code like CS101
@@ -25,4 +25,5 @@ const courseSchema = new mongoose.Schema({
   timestamps: true // adds createdAt & updatedAt
 });
 
-export default mongoose.model("Course", courseSchema);
+const Course = mongoose.model("Course", courseSchema);
+module.exports = Course;
