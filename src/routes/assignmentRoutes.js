@@ -5,21 +5,21 @@ const requireRole = require('../middleware/roles');
 const assignmentController = require('../controllers/assignmentController');
 
 //POST & PUT - only INSTRUCTOR can create and update assignments
-router.post('/courses/:courseId/assignments',
+router.post('/courses/:id/assignments',
     authMiddleware,
     requireRole('INSTRUCTOR'),
     assignmentController.createAssignment);
 
-router.get('/courses/:courseId/assignments',
+router.get('/courses/:id/assignments',
     authMiddleware,
     assignmentController.getAssignment);
 
-router.put('/courses/:courseId/assignments/:assignmentId',
+router.put('/courses/:id/assignments/:assignmentId',
     authMiddleware,
     requireRole('INSTRUCTOR'),
     assignmentController.updateAssignment);
 
-router.delete('/courses/:courseId/assignments/:assignmentId',
+router.delete('/courses/:id/assignments/:assignmentId',
     authMiddleware,
     requireRole('INSTRUCTOR'),
     assignmentController.deleteAssignment);

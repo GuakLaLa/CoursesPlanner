@@ -10,7 +10,7 @@ router.post("/:id/modules",
     addModule);
 
 // DELETE module
-router.delete("/:courseId/modules/:moduleId", 
+router.delete("/:id/modules/:moduleId", 
     requireRole('INSTRUCTOR'), 
     deleteModule);
 

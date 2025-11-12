@@ -4,7 +4,7 @@ const Course = require('../models/course');
 //Create new syllabus version
 async function createSyllabusVersion(req, res){
     try{
-        const { courseId } = req.params;
+        const { id: courseId } = req.params;
         const{ notes } = req.body;
 
         const course = await Course.findById(courseId);
@@ -43,7 +43,7 @@ async function createSyllabusVersion(req, res){
 //Update syllabus version (optimistic locking)
 async function updateSyllabusVersion(req, res){
     try{
-        const { courseId } = req.params;
+        const { id:courseId } = req.params;
         const { notes, lockVersion } = req.body;
 
         //Find current syllabus version
@@ -73,7 +73,7 @@ async function updateSyllabusVersion(req, res){
 //Get current syllabus version
 async function getCurrentSyllabusVersion(req, res){
     try{
-        const { courseId } = req.params;
+        const { id:courseId } = req.params;
 
         const currentVersion = await SyllabusVersion.findOne({ courseId, isCurrent: true });
         if(!currentVersion){
@@ -90,7 +90,7 @@ async function getCurrentSyllabusVersion(req, res){
 //Get all syllabus versions
 async function getAllSyllabusVersions(req, res){
     try{
-        const { courseId } = req.params;
+        const { id:courseId } = req.params;
         let { skip = 0, limit = 10, sort = 'version', order = 'desc' } = req.query;
 
         skip = parseInt(skip);

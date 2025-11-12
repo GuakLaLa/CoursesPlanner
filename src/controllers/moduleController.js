@@ -2,10 +2,9 @@ const Module = require("../models/module");
 
 // POST /api/courses/:id/modules (INSTRUCTOR ONLY)
 const addModule = async (req, res) => {
-const addModule = async (req, res) => {
   try {
     const { week, topic, reading } = req.body;
-    const { courseId } = req.params;
+    const { id: courseId } = req.params;
 
     // Ensure module week unique per course
     const exists = await Module.findOne({ courseId, week});
@@ -31,9 +30,8 @@ const addModule = async (req, res) => {
 
 // GET /api/courses/:id/modules (STUDENT + INSTRUCTOR)
 const getModules = async (req, res) => {
-const getModules = async (req, res) => {
   try {
-    const { courseId } = req.params;
+    const { id: courseId } = req.params;
     const modules = await Module.find({ courseId })
       .sort({ week: 1 });
 
@@ -46,9 +44,8 @@ const getModules = async (req, res) => {
 
 // DELETE /api/courses/:courseId/modules/:moduleId (INSTRUCTOR ONLY)
 const deleteModule = async (req, res) => {
-const deleteModule = async (req, res) => {
   try {
-    const { courseId, moduleId } = req.params;
+    const { id:courseId, moduleId } = req.params;
     const mod = await Module.findOne({ _id: moduleId, courseId });
     if (!mod) 
         return res.status(404).json({ message: "Module not found" });

@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './src/.env' });
+require('dotenv').config({ path: '../.env' });
 console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
 
 const express = require('express');
@@ -35,17 +35,14 @@ app.use(cookieParser());
 //Import Routes
 const authRoute = require('./routes/authRoute');
 const courseRoute = require('./routes/courseRoutes');
-const courseRoute = require('./routes/courseRoutes');
 const moduleRoute = require('./routes/moduleRoutes');
-const assignmentRoute = require('./routes/assignmentRoutes');
-const syllabusRoute = require('./routes/syllabusRoutes');
 const assignmentRoute = require('./routes/assignmentRoutes');
 const syllabusRoute = require('./routes/syllabusRoutes');
 
 //Use Routes
 app.use('/CoursesPlanner/api/auth', authRoute);
 app.use('/CoursesPlanner/api/courses', authMiddleware, courseRoute);
-app.use('/CoursesPlanner/api', authMiddleware, moduleRoute);
+app.use('/CoursesPlanner/api/courses', authMiddleware, moduleRoute);
 app.use('/CoursesPlanner/api', authMiddleware, assignmentRoute);
 app.use('/CoursesPlanner/api', authMiddleware, syllabusRoute);
 

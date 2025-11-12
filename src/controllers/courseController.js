@@ -30,7 +30,7 @@ const getCourses = async (req, res) => {
       skip,
       limit,
       totalCourses,
-      totalPages: Math.ceil(totalCourses / size),
+      totalPages: Math.ceil(totalCourses / limit),
       sort,
       order,
       data: courses

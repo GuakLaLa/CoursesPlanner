@@ -4,7 +4,7 @@ const Courses = require('../models/course.js');
 //Create new assignment 
 async function createAssignment(req, res){
     try{
-        const { courseId } = req.params;
+        const { id:courseId } = req.params;
 
         const {
             title,
@@ -43,7 +43,7 @@ async function createAssignment(req, res){
 //Update assignment 
 async function updateAssignment(req, res){
     try{
-        const { courseId, assignmentId } = req. params;
+        const { id:courseId, assignmentId } = req. params;
         const updates = req.body;
 
         // validate dueDate if present
@@ -56,7 +56,7 @@ async function updateAssignment(req, res){
         }
 
         const assignment = await Assignment.findOneAndUpdate(
-            { _id: id, courseId },
+            { _id: assignmentId, courseId: courseId },
             updates,
             { new: true }
         );
@@ -74,7 +74,7 @@ async function updateAssignment(req, res){
 
 async function getAssignment(req, res) {
     try{
-        const { courseId } = req.params;
+        const { id: courseId } = req.params;
         const { skip = 0, limit = 10, sort = 'createdAt', order = 'asc' } = req.query;
 
         const course = await Courses.findById(courseId);
@@ -105,9 +105,9 @@ async function getAssignment(req, res) {
 // DELETE 
 async function deleteAssignment(req, res){
     try{
-        const { courseId, assignmentId } = req.params;
+        const { id: courseId, assignmentId } = req.params;
 
-        const assignment = await Assignment.findOne({ _id: id, courseId });
+        const assignment = await Assignment.findOne({ _id: assignmentId, courseId });
         if (!assignment) return res.status(404).json({ message: 'Assignment not found' });
 
         await assignment.deleteOne();
