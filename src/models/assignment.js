@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 
 const assignmentSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
-        required: [true, 'User ID is required'],
-        index: true 
-    },
     courseId: {
         type: String,
         ref: "Courses",

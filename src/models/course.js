@@ -1,17 +1,11 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-  userId:{
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
   //coures code like CS101
   code: {
     type: String,
     required: true,
-    unique: true,
-    trim: true
+    unique: true
   },
   title: {
     type: String,
@@ -31,4 +25,4 @@ const courseSchema = new mongoose.Schema({
   timestamps: true // adds createdAt & updatedAt
 });
 
-export default mongoose.model("Course", courseSchema);
+module.exports = mongoose.model("Course", courseSchema);

@@ -1,13 +1,24 @@
-import express from "express";
-import { getCourses, createCourse, updateCourse } from "../controllers/courseController.js";
-import { requireInstructor } from "../middleware/auth.js";
-
+const express = require('express');
+const requireRole = require('../middleware/roles');
 const router = express.Router();
+const { getCourses, createCourse, updateCourse, deleteCourse } = require('../controllers/courseController.js');
 
-router.get("/", getCourses);
-router.post("/", requireInstructor, createCourse);
-router.patch("/:id", requireInstructor, updateCourse);
+router.get("/",  getCourses);
+
+router.post("/", 
+    requireRole('INSTRUCTOR'), 
+    createCourse);
+
+router.patch("/:id",  
+    requireRole('INSTRUCTOR'), 
+    updateCourse);
+
 // DELETE course
-router.delete("/:id", protect, authorize("INSTRUCTOR"), deleteCourse);
+router.delete("/:id",  
+    requireRole('INSTRUCTOR'), 
+    deleteCourse);
 
-export default router;
+module.exports = router;
+
+
+
