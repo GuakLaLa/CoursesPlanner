@@ -1,11 +1,11 @@
+require('dotenv').config({ path: './src/.env' });
+console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
+
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
-const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
-
-dotenv.config();
 
 //Connect to database
 const mongoose = require('mongoose');

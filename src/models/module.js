@@ -27,9 +27,5 @@ const moduleSchema = new mongoose.Schema({
 //Ensure each course can only have one module per week
 moduleSchema.index({ courseId: 1, week: 1 }, { unique: true });
 
-<<<<<<< HEAD
 const Module = mongoose.model("Module", moduleSchema);
 module.exports = Module;
-=======
-export default mongoose.model("Module", moduleSchema);
->>>>>>> 69aae651ab353530520df0201f4a2ebafd3af539

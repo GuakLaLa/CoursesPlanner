@@ -2,16 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Users = require('../models/user');
 
-//Render Sign Up Page
-async function getSignUpPage(req, res) {
-    res.render('SignUp');
-}
-
-//Render Login Page
-async function getLoginPage(req, res) {
-    res.render('Login');
-}
-
 async function signUpUser(req, res){
     try{
         const {
@@ -74,6 +64,7 @@ async function loginUser(req, res){
         res.json({token});
 
     }catch(error){
+        console.error("🔥 Login Error:", error);
         res.status(500).send("Server error");
     }
 }
@@ -90,4 +81,4 @@ async function logoutUser(req, res){
     })
 };
 
-module.exports = { getSignUpPage, getLoginPage, signUpUser, loginUser, logoutUser };
+module.exports = { signUpUser, loginUser, logoutUser };
