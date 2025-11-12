@@ -64,6 +64,7 @@ async function loginUser(req, res){
         res.json({token});
 
     }catch(error){
+        console.error("🔥 Login Error:", error);
         res.status(500).send("Server error");
     }
 }

@@ -35,7 +35,10 @@ app.use(cookieParser());
 //Import Routes
 const authRoute = require('./routes/authRoute');
 const courseRoute = require('./routes/courseRoutes');
+const courseRoute = require('./routes/courseRoutes');
 const moduleRoute = require('./routes/moduleRoutes');
+const assignmentRoute = require('./routes/assignmentRoutes');
+const syllabusRoute = require('./routes/syllabusRoutes');
 const assignmentRoute = require('./routes/assignmentRoutes');
 const syllabusRoute = require('./routes/syllabusRoutes');
 
@@ -48,5 +51,5 @@ app.use('/CoursesPlanner/api', authMiddleware, syllabusRoute);
 
 //404 handler
 app.use((req, res) => {
-    res.status(404).send("Page not found");
+    res.status(404).send("Page not found");
 });
