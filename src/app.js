@@ -6,6 +6,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const setupSwagger = require("./swagger");
+
+setupSwagger(app); // ✅ works
+
 
 //Connect to database
 const mongoose = require('mongoose');
@@ -21,6 +25,9 @@ mongoose.connect(uri)
 .catch((err) => {
     console.log("Failed to connect to MongoDB", err);
 });
+
+// ✅ Swagger setup
+setupSwagger(app);
 
 //Set view engine
 app.set('view engine', 'ejs');

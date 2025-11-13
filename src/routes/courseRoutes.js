@@ -3,12 +3,14 @@ const requireRole = require('../middleware/roles');
 const router = express.Router();
 const { getCourses, createCourse, updateCourse, deleteCourse } = require('../controllers/courseController.js');
 
+
 router.get("/",  getCourses);
 
 router.post("/", 
     requireRole('INSTRUCTOR'), 
     createCourse);
 
+// UPDATE course
 router.patch("/:id",  
     requireRole('INSTRUCTOR'), 
     updateCourse);
