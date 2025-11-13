@@ -111,7 +111,7 @@ async function getAllSyllabusVersions(req, res){
             order,
             data: versions
         });
-        
+
     }catch(error){
         console.log(error);
         res.status(500).send("Server error");

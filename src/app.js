@@ -2,6 +2,8 @@ require('dotenv').config({ path: '../.env' });
 console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
 
 const express = require('express');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
@@ -52,6 +54,41 @@ app.use('/CoursesPlanner/api/courses', authMiddleware, courseRoute);
 app.use('/CoursesPlanner/api/courses', authMiddleware, moduleRoute);
 app.use('/CoursesPlanner/api', authMiddleware, assignmentRoute);
 app.use('/CoursesPlanner/api', authMiddleware, syllabusRoute);
+
+//Swagger setup
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Courses Planner API',
+      version: '1.0.0',
+      description: 'API documentation for Courses Planner',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000/CoursesPlanner/api',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: ['./src/routes/*.js'], // adjust this path if needed
+};
+
+const spec = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 //404 handler
 app.use((req, res) => {

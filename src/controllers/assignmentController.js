@@ -4,7 +4,7 @@ const Courses = require('../models/course.js');
 //Create new assignment 
 async function createAssignment(req, res){
     try{
-        const { id:courseId } = req.params;
+        const { id: courseId } = req.params;
 
         const {
             title,
@@ -43,7 +43,7 @@ async function createAssignment(req, res){
 //Update assignment 
 async function updateAssignment(req, res){
     try{
-        const { id:courseId, assignmentId } = req. params;
+        const { id: courseId,assignmentId } = req. params;
         const updates = req.body;
 
         // validate dueDate if present
@@ -105,7 +105,7 @@ async function getAssignment(req, res) {
 // DELETE 
 async function deleteAssignment(req, res){
     try{
-        const { id: courseId, assignmentId } = req.params;
+        const { courseId, assignmentId } = req.params;
 
         const assignment = await Assignment.findOne({ _id: assignmentId, courseId });
         if (!assignment) return res.status(404).json({ message: 'Assignment not found' });
